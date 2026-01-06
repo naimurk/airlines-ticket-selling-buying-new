@@ -21,7 +21,7 @@ import { useSellingTicketDeleteMutation } from "@/redux/features/ticket/ticketp.
 import DeleteModal from "./deleteSelling";
 import ViewModal from "./viewModal";
 import type { TMeta } from "@/types/global-types";
-
+// sdfs
 interface DataTableProps {
   data: TSTicket[];
   isLoading?: boolean;
