@@ -232,6 +232,7 @@ export default function AddSellingModal({
         }).unwrap();
         toast.success("Selling record updated successfully!");
       } else {
+        console.log(formData);
         await createSellingTicket(formData).unwrap();
         toast.success("Selling record created successfully!");
       }

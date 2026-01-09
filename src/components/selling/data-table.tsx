@@ -97,6 +97,16 @@ export default function DataTable({
     }, 100);
   };
 
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = date.toLocaleString("en-US", { month: "short" });
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0 bg-white">
@@ -181,7 +191,7 @@ export default function DataTable({
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                 >
                   <td className="py-4 px-4 text-sm text-gray-600">
-                    {new Date(item.date).toLocaleDateString()}
+                    {formatDate(item.date)}
                   </td>
                   <td className="py-4 px-4">
                     <Badge variant="outline" className="font-mono text-xs">
