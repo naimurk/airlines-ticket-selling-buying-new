@@ -185,7 +185,7 @@ const PrintSlip = React.forwardRef<HTMLDivElement, PrintSlipProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 PrintSlip.displayName = "PrintSlip";
 export default PrintSlip;

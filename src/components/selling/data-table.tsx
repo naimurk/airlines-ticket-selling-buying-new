@@ -21,6 +21,7 @@ import { useSellingTicketDeleteMutation } from "@/redux/features/ticket/ticketp.
 import DeleteModal from "./deleteSelling";
 import ViewModal from "./viewModal";
 import type { TMeta } from "@/types/global-types";
+import PrintSlip from "./payment-slip";
 // sdfs
 interface DataTableProps {
   data: TSTicket[];
@@ -375,10 +376,7 @@ export default function DataTable({
       {/* Print component - conditionally rendered and hidden */}
       {itemToPrint && (
         <div style={{ display: "none" }}>
-          {/* <PrintSlip ref={contentRef} item={itemToPrint} /> */}
-          <div ref={contentRef} className="slip-content">
-            <h1>hello world</h1>
-          </div>
+          <PrintSlip ref={contentRef} item={itemToPrint} />
         </div>
       )}
     </Card>
