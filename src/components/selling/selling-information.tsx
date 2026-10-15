@@ -13,7 +13,7 @@ import type { TMeta } from "@/types/global-types";
 
 export default function SellingInformation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [, setTimeFilter] = useState("all");
+  const [, _setTimeFilter] = useState("all");
   const [filters, setFilters] = useState<
     Array<{ name: string; value: string }>
   >([
@@ -122,14 +122,14 @@ export default function SellingInformation() {
 
   const handlePageChange = (page: number) => {
     const newFilters = filters.map((filter) =>
-      filter.name === "page" ? { ...filter, value: page.toString() } : filter
+      filter.name === "page" ? { ...filter, value: page.toString() } : filter,
     );
     setFilters(newFilters);
   };
 
-  const handleTimeFilter = (filter: string) => {
-    setTimeFilter(filter);
-  };
+  // const handleTimeFilter = (filter: string) => {
+  //   setTimeFilter(filter);
+  // };
 
   if (isError) {
     toast.error("Failed to load selling records");
@@ -149,7 +149,7 @@ export default function SellingInformation() {
       </div>
 
       {/* Statistics */}
-      <StatisticsCards onTimeFilterChange={handleTimeFilter} />
+      <StatisticsCards />
 
       {/* Filter Bar */}
       <FilterBar onFilter={handleFilter} />
