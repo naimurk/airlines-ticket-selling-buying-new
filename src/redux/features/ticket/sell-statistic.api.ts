@@ -8,23 +8,35 @@ export type TSellStatistics = {
   totalDue: number;
 };
 
+export type TStatisticsQuery = {
+  fromDate?: string;
+  toDate?: string;
+};
+
 export const sellStatisticsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSellStatistics: builder.query<
       TResponseWithRedux<TSellStatistics>,
-      string
+      TStatisticsQuery
     >({
-      query: (timeFilter) => {
+      query: ({ fromDate, toDate }) => {
         const params = new URLSearchParams();
-        if (timeFilter && timeFilter !== "all") {
-          params.append("timeFilter", timeFilter);
+
+        if (fromDate) {
+          params.append("fromDate", fromDate);
         }
+
+        if (toDate) {
+          params.append("toDate", toDate);
+        }
+
         return {
           url: `/sell/sell-statistics`,
           method: "GET",
-          params: params,
+          params,
         };
       },
+
       providesTags: ["statistic"],
     }),
   }),
