@@ -161,6 +161,12 @@ export default function SellingInformation() {
         meta={meta as TMeta}
         onPageChange={handlePageChange}
         onRefresh={refetch}
+        fromDate={
+          filters.find((filter) => filter.name === "startDate")?.value || ""
+        }
+        toDate={
+          filters.find((filter) => filter.name === "endDate")?.value || ""
+        }
       />
 
       {/* Add Selling Modal */}

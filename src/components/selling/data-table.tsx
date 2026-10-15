@@ -5,15 +5,7 @@ import { useReactToPrint } from "react-to-print"; // Import useReactToPrint
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Edit,
-  Trash2,
-  Eye,
-  Plane,
-  Printer,
-  Loader2,
-  RefreshCw,
-} from "lucide-react";
+
 import type { TSTicket } from "@/types";
 import AddSellingModal from "./add-selling";
 import { toast } from "sonner";
@@ -22,6 +14,17 @@ import DeleteModal from "./deleteSelling";
 import ViewModal from "./viewModal";
 import type { TMeta } from "@/types/global-types";
 import PrintSlip from "./payment-slip";
+import SellingReport from "./selling-report";
+import {
+  Edit,
+  Trash2,
+  Eye,
+  Plane,
+  Printer,
+  Loader2,
+  RefreshCw,
+  FileText,
+} from "lucide-react";
 // sdfs
 interface DataTableProps {
   data: TSTicket[];
@@ -29,6 +32,8 @@ interface DataTableProps {
   meta?: TMeta;
   onPageChange?: (page: number) => void;
   onRefresh?: () => void;
+  fromDate?: string;
+  toDate?: string;
 }
 
 export default function DataTable({
@@ -37,6 +42,8 @@ export default function DataTable({
   meta,
   onPageChange,
   onRefresh,
+  fromDate,
+  toDate,
 }: DataTableProps) {
   const [viewItem, setViewItem] = useState<TSTicket | null>(null);
   const [editItem, setEditItem] = useState<TSTicket | null>(null);
@@ -47,7 +54,7 @@ export default function DataTable({
     useSellingTicketDeleteMutation();
 
   const contentRef = useRef<HTMLDivElement>(null); // Ref for the component to be printed
-
+  const reportRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     contentRef,
     documentTitle: itemToPrint
@@ -56,17 +63,16 @@ export default function DataTable({
     onAfterPrint: () => setItemToPrint(null),
   });
 
-  //   const contentRef = useRef<HTMLDivElement>(null);
-  //  const reactToPrintFn = useReactToPrint({
-  //   contentRef,
-  //   documentTitle: "Subscription Slip",
-  // });
-  // Effect to trigger print when itemToPrint is set
-  // useEffect(() => {
-  //   if (itemToPrint) {
-  //     handlePrint();
-  //   }
-  // }, [itemToPrint, handlePrint]);
+  const handleReportPrint = useReactToPrint({
+    contentRef: reportRef,
+    documentTitle: `Selling_Report_${fromDate || "all"}_${toDate || "all"}`,
+    pageStyle: `
+    @page { size: A4 landscape; margin: 10mm; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  `,
+  });
 
   const handleEdit = (item: TSTicket) => {
     setEditItem(item);
@@ -134,6 +140,15 @@ export default function DataTable({
               </Badge>
             )}
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleReportPrint()}
+            className="flex items-center gap-2 bg-transparent"
+          >
+            <FileText className="h-4 w-4" />
+            Print Report
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -379,6 +394,15 @@ export default function DataTable({
           <PrintSlip ref={contentRef} item={itemToPrint} />
         </div>
       )}
+
+      <div className="hidden">
+        <SellingReport
+          ref={reportRef}
+          data={data}
+          fromDate={fromDate}
+          toDate={toDate}
+        />
+      </div>
     </Card>
   );
 }
